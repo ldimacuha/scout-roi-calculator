@@ -1,0 +1,590 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <title>Scout Talent:Recruit ROI Calculator</title>
+    <meta name="description" content="Scout Talent:Recruit ROI Calculator" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous" /> -->
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <!-- Compiled and minified CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Roboto:400,700" rel="stylesheet" />
+
+    <!-- On Page Style Overide Here -->
+    <style type="text/css">
+        .scout-navy {
+            background-color: #084d6d;
+        }
+
+        .scout-silver {
+            background-color: #98a4ae;
+        }
+
+        .scout-teal-text {
+            background-color: #5bc4bf;
+        }
+
+        .scout-navy-text {
+            color: #084d6d;
+        }
+
+        .scout-teal-text {
+            color: #5bc4bf;
+        }
+
+        .col.s12.ml1,
+        .col.s12.ml2 {
+            margin-left: 0;
+        }
+
+        .col.s12.mr1,
+        .col.s12.mr2 {
+            margin-right: 0;
+        }
+
+        .ml1 {
+            margin-left: 10px;
+        }
+
+        .ml2 {
+            margin-left: 20px;
+        }
+
+        .mr1 {
+            margin-right: 10px;
+        }
+
+        .mr2 {
+            margin-right: 20px;
+        }
+
+        h1 {
+            font-size: 30px;
+        }
+
+        button {
+            margin-right: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .box {
+            border: 1px solid #cccccc;
+            margin-bottom: 15px;
+        }
+
+        .box-header {
+            padding: 15px;
+        }
+
+        .box-header h1 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .box-header p:last-child {
+            margin: 0;
+        }
+
+        .postfix {
+            min-width: 90px;
+        }
+
+        .input-box {
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            -ms-border-radius: 3px;
+            -o-border-radius: 3px;
+            max-width: 90px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .text-label {
+            width: 100%;
+        }
+
+        .no-padding {
+            padding: 0;
+        }
+    </style>
+    <style>
+        @media screen and (max-width: 600px) {
+            #page3 .box {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!--[if lte IE 9]>
+        <div class="container">
+            <div class="col-xs-12">
+                <div class="alert alert-warning">
+                    <p class="browserupgrade"><span class="glyphicon glyphicon-exclamation-sign"></span> You are using an <strong>outdated</strong> browser. Please <a href="https://www.google.com/chrome/">upgrade your browser</a> to improve your experience and security.</p>
+                </div>
+            </div>
+        </div>
+	<![endif]-->
+
+    <div id="root">
+    </div>
+
+    <script type="text/javascript">
+        // IF THE BROWSER IS INTERNET EXPLORER 10
+        if (navigator.appVersion.indexOf("MSIE 10") !== -1) {
+            console.log('Browser: IE10');
+        }
+        // IF THE BROWSER IS INTERNET EXPLORER 11
+        var UAString = navigator.userAgent;
+        if (UAString.indexOf("Trident") !== -1 && UAString.indexOf("rv:11") !== -1) {
+            console.log('Browser: IE11');
+        }
+    </script>
+
+    <!-- POLYFILL SERVICE  -->
+    <script>if (!(window.fetch && window.Promise && [].includes && Object.assign && window.Map)) { document.write('<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,fetch"></scr' + 'ipt>') }</script>
+
+    <!-- CORE JS POLYFILL -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/core.min.js" integrity="sha256-kxCVOCrAy8XoW+tbOyHwc57xsjC8K2qMsuSPsdqCt2M="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/library.min.js" integrity="sha256-pY39oFuhtlLdG+1TzoGeTLS9r8n2uiGXPkGY0Rhlr88="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/shim.min.js" integrity="sha256-gktKjver6UarJBoyUcpsWDrZZA+leNn2O93cBHwvF5Y="
+        crossorigin="anonymous"></script>
+
+    <!-- RAF -->
+    <script src="https://cdn.jsdelivr.net/npm/request-animation-frame-polyfill@0.1.3/index.min.js"></script>
+
+    <!-- OBJECT ASSIGN POLYFILL -->
+    <script src="https://cdn.jsdelivr.net/npm/object-assign-polyfill@0.1.0/index.min.js"></script>
+
+    <!-- FOR EACH POLYFILL -->
+    <script type="text/javascript">
+        if (window.NodeList && !NodeList.prototype.forEach) {
+            NodeList.prototype.forEach = function (callback, thisArg) {
+                thisArg = thisArg || window;
+                for (var i = 0; i < this.length; i++) {
+                    callback.call(thisArg, this[i], i, this);
+                }
+            };
+        }
+    </script>
+
+    <!-- REACT DEV -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- REACT PROD -->
+    <!-- <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script> -->
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+    <!-- Other JS -->
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script type="text/javascript">
+        const recruitmentData = [
+            {
+                text: 'Number of roles filled by in-house HR/Recruitment Team per year',
+                prefix: '',
+                inputName: 'RDnumberOfRolesByHR',
+                postfix: 'roles',
+                requirement: '',
+                defaultValue: 10
+            },
+            {
+                text: 'Number of roles filled by Recruitment Agencies per year',
+                prefix: '',
+                inputName: 'RDnumberOfRolesByRA',
+                postfix: 'roles',
+                requirement: '',
+                defaultValue: 10
+            },
+            {
+                text: 'Average fee per role filled by Recruitment Agency',
+                prefix: '$',
+                inputName: 'RDfeePerRoleBy',
+                postfix: 'per role',
+                requirement: 'RDnumberOfRolesByRA',
+                defaultValue: 100
+            },
+            {
+                text: 'Approximate number of applications per role',
+                prefix: '',
+                inputName: 'RDappsPerRole',
+                postfix: 'applications',
+                requirement: '',
+                defaultValue: 25
+            },
+            {
+                text: 'Average an hour per employee in HR/Recruitment Team (This hourly rate is based on cost of seat which is typically 2.5x salary)',
+                prefix: '$',
+                inputName: 'RDhourlySalaryHR',
+                postfix: 'per hour',
+                requirement: '',
+                defaultValue: 35
+            }
+        ];
+
+        const activityData = [
+            {
+                text: 'HR writes ad and places on careers website, as well as external job boards (e.g. Seek, Indeed)',
+                prefix: '',
+                inputName: 'ADhrWritesAd',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 30
+            },
+            {
+                text: 'All applications received in HR inbox, checked, categorised, filed.',
+                prefix: '',
+                inputName: 'ADappsReceived',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 120
+            },
+            {
+                text: 'HR send "Receipt of Application" e-mails to all candidates.',
+                prefix: '',
+                inputName: 'ADsendReceipt',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 15
+            },
+            {
+                text: 'HR eliminates irrelevant candidates based on 1st round criteria',
+                prefix: '',
+                inputName: 'ADhrFiltersCandidates',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 180
+            },
+            {
+                text: 'Applications and resumes from potentially relevant candidates reviewed and forwarded to line manager (Please enter average time for 15 applications)',
+                prefix: '',
+                inputName: 'ADforwardToLineManager',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 30
+            },
+            {
+                text: 'Line Manager assesses 1st round shortlist candidates and develops 2nd round candidate shortlist (Please enter average time for 5 applications)',
+                prefix: '',
+                inputName: 'ADLineManagerShortlists',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 60
+            },
+            {
+                text: 'Face-to-Face interviews scheduled (Please enter average time for 5 candidates)',
+                prefix: '',
+                inputName: 'ADinterviewsScheduled',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 25
+            },
+            {
+                text: 'Face-to Face interviews conducted (Please enter average time for 5 candidates)',
+                prefix: '',
+                inputName: 'ADinterviewsConducted',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 300
+            },
+            {
+                text: 'Reference Checks (Please enter average time for 5 candidates)',
+                prefix: '',
+                inputName: 'ADreferenceChecks',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 40
+            },
+            {
+                text: 'Unsuccessful candidates notified by e-mail',
+                prefix: '',
+                inputName: 'ADunsuccesfulCandidatesNotified',
+                postfix: 'minutes',
+                requirement: '',
+                defaultValue: 30
+            }
+        ];
+    </script>
+    <!-- <script type="text/javascript"> -->
+    <script type="text/babel">
+        class RoiCalculator extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    page: 1,
+                    recruitmentDataReady: false,
+                    activityDataReady: false,
+                    avgHoursWithoutScout: 0,
+                    avgHoursWithScout: 0,
+                    hoursSavingsWithScout: 0,
+                    savingsWithScout: 0,
+                    savingsWithoutRA: 0,
+                    totalSavings: 0
+                }
+                this.handleInput = this.handleInput.bind(this);
+                this.nextPage = this.nextPage.bind(this);
+                this.prevPage = this.prevPage.bind(this);
+                this.requestDemo = this.requestDemo.bind(this);
+                this.handleCalculate = this.handleCalculate.bind(this);
+                this.handlePrefill = this.handlePrefill.bind(this);
+            }
+
+            handleInput(e) {
+                this.setState({
+                    [e.target.name]: e.target.value
+                });
+            }
+
+            handlePrefill(page) {
+                switch(page) {
+                    case 1: {
+                        this.props.recruitmentData.forEach(data=>{
+                            let name = data.inputName;
+                            this.setState({ [name]: data.defaultValue });
+                        });
+                    } break;
+                    case 2: {
+                        this.props.activityData.forEach(data=>{
+                            let name = data.inputName;
+                            this.setState({ [name]: data.defaultValue });
+                        });
+                    } break;
+                    default: {
+                    }
+                }
+            }
+
+            handleCalculate() {
+                let num = 0;
+                this.props.activityData.forEach(input=>{
+                    let name = input.inputName;
+                    name = name.slice(0,2);
+                    if(name==='AD') {
+                        num = num + parseInt(this.state[input.inputName]);
+                    }
+                });
+
+                // 1
+                let avgHoursWithoutScout = (num / 60) * (parseInt(this.state.RDnumberOfRolesByHR) + parseInt(this.state.RDnumberOfRolesByRA)) ;
+                avgHoursWithoutScout = avgHoursWithoutScout.toFixed(2);
+                // 2
+
+                let avgHoursWithScout = (241 / 60) * (parseInt(this.state.RDnumberOfRolesByHR) + parseInt(this.state.RDnumberOfRolesByRA)) ;
+                avgHoursWithScout = avgHoursWithScout.toFixed(2);
+                // 3
+
+                let hoursSavingsWithScout = avgHoursWithoutScout - avgHoursWithScout;
+                hoursSavingsWithScout = hoursSavingsWithScout.toFixed(2);
+
+                // saving 1
+
+                let savingsWithScout = parseInt(this.state.hoursSavingsWithScout) * parseInt(this.state.RDhourlySalaryHR);
+                savingsWithScout = savingsWithScout.toFixed(2);
+
+                // saving 2
+
+                let savingsWithRA = parseInt(this.state.RDnumberOfRolesByRA) * parseInt(this.state.RDfeePerRoleBy);
+                savingsWithRA = savingsWithRA.toFixed(2);
+
+                // TOTAL
+
+                let totalSavings = savingsWithScout + savingsWithRA;
+
+                this.setState({ avgHoursWithoutScout, avgHoursWithScout, hoursSavingsWithScout, savingsWithScout, savingsWithRA, totalSavings});
+            }
+
+            nextPage(currentPage) {
+                currentPage === 2 ? this.handleCalculate() : '';
+
+                this.setState({
+                    page: currentPage + 1
+                });
+            }
+
+            prevPage(currentPage) {
+                this.setState({
+                    page: currentPage - 1
+                });
+            }
+
+            requestDemo() {
+                window.parent.location.href= "http://www.scouttalenthq.com/request-demo/";
+            }
+
+            render() {
+
+                const page1visibility = this.state.page === 1 ? '' : 'hidden';
+                const page2visibility = this.state.page === 2 ? '' : 'hidden';
+                const page3visibility = this.state.page === 3 ? '' : 'hidden';
+
+                const avgHoursWithoutScout = this.state.avgHoursWithoutScout;
+                const avgHoursWithScout = this.state.avgHoursWithScout;
+                const hoursSavingsWithScout = this.state.hoursSavingsWithScout;
+                const savingsWithScout = this.state.savingsWithScout;
+                const savingsWithoutRA =this.state.savingsWithoutRA;
+                const totalSavings = this.state.totalSavings;
+
+                return (
+                    <div className="row">
+                        <div id="page1" className={page1visibility}>
+                            <h1>Scout Talent:Recruit ROI Calculator</h1>
+                            <p>The ROI calculator below compares the time spent managing a recruitment campaign manually and the costs involved, to the time spent managing a recruitment campaign and the costs involved with a candidate management system like Scout Talent: Recruit.</p>
+                            <button className="right" onClick={()=>this.handlePrefill(1)}>Prefill</button>
+                            <div className="col s12 m12 l8">
+                                <div className="row">
+                                    <div id="recruitment-data" className="box">
+                                        <div className="box-header scout-navy white-text">
+                                            <h1>Recruitment Data</h1>
+                                            <p>Please enter in the data below to receive an ROI breakdown.</p>
+                                        </div>
+                                        <Table data={this.props.recruitmentData} handleInput={this.handleInput} appStates={this.state} />
+                                    </div>
+                                    <button className="waves-effect btn scout-teal" onClick={() => this.nextPage(1)}>NEXT</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="page2" className={page2visibility}>
+                            <h1>Scout Talent:Recruit ROI Calculator</h1>
+                            <button className="right" onClick={()=>this.handlePrefill(2)}>Prefill</button>
+                            <div className="col s12 m12 l8">
+                                <div className="row">
+                                    <div id="activity-data" className="box">
+                                        <div className="box-header scout-navy white-text">
+                                            <h1>Activity</h1>
+                                            <p>Please accurately estimate in monutes how long each activity takes.</p>
+                                        </div>
+                                        <Table data={this.props.activityData} handleInput={this.handleInput} appStates={this.state} />
+                                    </div>
+                                    <button className="waves-effect btn scout-silver" onClick={() => this.prevPage(2)}>PREVIOUS</button>
+                                    <button className="waves-effect btn scout-teal" onClick={() => this.nextPage(2)}>SEE RESULTS</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="page3" className={page3visibility}>
+                            <h1>ROI Breakdown</h1>
+                            <div className="col s12 m6">
+                                <div className="row">
+                                    <div id="roi-breakdown" className="box mr1">
+                                        <div className="box-header scout-navy white-text">
+                                            <h1>Recruitment Campaigns</h1>
+                                        </div>
+                                        <table>
+                                            <tbody>
+                                                <tr><td><div className="col s12"><p>Average hours on recruitment campaigns per year</p><p>{avgHoursWithoutScout} hour{avgHoursWithoutScout > 1 ? 's' : ''}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>Average hours on recruitment campaigns per year with Scout Talent</p><p>{avgHoursWithScout} hour{avgHoursWithScout > 1 ? 's' : ''}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>Total savings (# of hours) per year with Scout Talent</p><p>{hoursSavingsWithScout} hour{hoursSavingsWithScout > 1 ? 's' : ''}</p></div></td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col s12 m6">
+                                <div className="row">
+                                    <div id="savings-summary" className="box ml1">
+                                        <div className="box-header scout-navy white-text">
+                                            <h1>Scout Savings Summary</h1>
+                                        </div>
+                                        <table>
+                                            <tbody>
+                                                <tr><td><div className="col s12"><p>Total savings in $ per year with Scout Talent implemented</p><p>${savingsWithScout}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>Total savings per year without need for Recruitment Agency</p><p>${savingsWithoutRA}</p></div></td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="total-savings" className="box ml1">
+                                        <div className="box-header scout-navy white-text">
+                                            <h1>Total Savings per year</h1>
+                                        </div>
+                                        <table>
+                                            <tbody>
+                                                <tr><td><div className="col s12"><p>${totalSavings}</p></div></td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="col s12">
+                                        <button className="waves-effect btn scout-teal" onClick={() => this.requestDemo()}>REQUEST A DEMO</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="clearfix"></div>
+                            <button className="waves-effect btn scout-silver" onClick={() => this.prevPage(3)}>PREVIOUS</button>
+                            <button className="waves-effect btn scout-teal" onClick={() => this.requestDemo()}>REQUEST A DEMO</button>
+                        </div>
+                    </div>
+                )
+            }
+        }
+
+        class Table extends React.Component {
+            render() {
+                let tableData = this.props.data;
+                let rows = [];
+                tableData.forEach((data, i) => {
+                    rows.push(<TableRow text={data.text} prefix={data.prefix} postfix={data.postfix} inputName={data.inputName} handleInput={this.props.handleInput} appStates={this.props.appStates} key={i} />);
+                });
+                return (
+                    <table className="highlight">
+                        <tbody>
+                            {rows}
+                        </tbody>
+                    </table>
+                )
+            }
+        }
+
+        class TableRow extends React.Component {
+            render() {
+                const text = this.props.text;
+                const prefix = this.props.prefix;
+                const postfix = this.props.postfix;
+                const name = this.props.inputName;
+
+                const defaultValue = this.props.appStates[name];
+
+                const plural = this.props.appStates['RDappsPerRole'] > 1 ? 's' : '';
+                const extraText = name === 'ADsendReceipt' ? '(Please enter average time for ' + this.props.appStates['RDappsPerRole'] + ' application' + plural + ')' : '';
+
+                return (
+                    <tr>
+                        <td className="text-label">{text} {extraText}</td>
+                        <td className="prefix">{prefix}</td>
+                        <td><input className="input-box browser-default" name={name} defaultValue={defaultValue} type="number" min="0" maxLength="5" onChange={this.props.handleInput} /></td>
+                        <td className="postfix">{postfix}</td>
+                    </tr>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <RoiCalculator recruitmentData={recruitmentData} activityData={activityData} />, document.getElementById('root')
+        )
+    </script>
+
+    <script src="https://candidate-office.s3.amazonaws.com/js/iframe-resizer/iframeResizer.contentWindow.min.js" type="text/javascript"></script>
+
+</body>
+
+
+
+</html>
