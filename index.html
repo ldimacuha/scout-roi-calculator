@@ -392,7 +392,7 @@
             constructor(props) {
                 super(props);
                 this.state = {
-                    devMode: false,
+                    devMode: true,
                     page: 1,
                     recruitmentDataReady: false,
                     activityDataReady: false,
@@ -485,7 +485,7 @@
                 let totalSavings = savingsWithScout + savingsWithoutRA;
                 console.log('Total Savings: ' + totalSavings);
 
-                this.setState({ avgHoursWithoutScout, avgHoursWithScout, hoursSavingsWithScout, savingsWithScout, savingsWithoutRA, totalSavings });
+                this.setState({ avgHoursWithoutScout, avgHoursWithScout, hoursSavingsWithScout, savingsWithScout, savingsWithoutRA, totalSavings, avgMinutesPerJob, avgMinutesPerJobWithScout });
             }
 
             nextPage(currentPage) {
@@ -630,7 +630,7 @@
                             <div className="clearfix"></div>
                             <div className="col s12">
                                 <div className="row">
-                                    <TimeSavingsTable activityData={this.props.activityData} appStates={this.state} />
+                                    <TimeSavingsTable activityData={this.props.activityData} manualHours={this.state.avgMinutesPerJob} scoutHours={this.state.avgMinutesPerJobWithScout} appStates={this.state} />
                                 </div>
                             </div>
                             <div className="clearfix"></div>
@@ -707,18 +707,14 @@
                 const activityData = this.props.activityData;
                 const appStates = this.props.appStates;
 
-                let avgMinutesPerJob = 0; // Average Minutes Per Job
-                let avgMinutesPerJobWithScout = 0; // Average Minutes Per Job With Scout
+                const manualHours = this.props.manualHours / 60;
+                const scoutHours = this.props.scoutHours / 60;
+
                 let rows = [];
                 activityData.forEach((data, i) => {
                     let manualValue = this.props.appStates[data.inputName];
                     rows.push(<TimeSavingsTableRow text={data.text} manualValue={manualValue} scoutValue={data.scoutValue} featureText={data.featureText} key={i} />);
-                    avgMinutesPerJob = avgMinutesPerJob + this.props.appStates[data.inputName];
-                    avgMinutesPerJobWithScout = avgMinutesPerJobWithScout + data.scoutValue;
                 });
-
-                const manualHours = avgMinutesPerJob / 60;
-                const scoutHours = avgMinutesPerJobWithScout / 60;
 
                 return (
                     <table id="time-savings-table" className="striped">
