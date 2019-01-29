@@ -28,8 +28,12 @@
             background-color: #98a4ae;
         }
 
-        .scout-teal-text {
+        .scout-teal {
             background-color: #5bc4bf;
+        }
+
+        .scout-teal-text {
+            color: #5bc4bf;
         }
 
         .scout-navy-text {
@@ -125,12 +129,57 @@
         .no-padding {
             padding: 0;
         }
+
+        #time-savings-table thead th {
+            text-align: center;
+            border-radius: 0px;
+        }
+
+        #time-savings-table .text-label {
+            text-align: left;
+        }
+
+        #time-savings-table .manual-number {
+            text-align: center;
+        }
+
+        #time-savings-table .scout-number {
+            text-align: center;
+        }
+
+        #time-savings-table .feature-text {
+            text-align: center;
+        }
+
+        table#time-savings-table thead tr,
+        table#time-savings-table tbody tr.last-row {
+            background-color: #084d6d;
+            color: #ffffff;
+        }
+
+        table#time-savings-table thead th {
+            min-width: 200px;
+        }
     </style>
     <style type="text/css">
+        @media screen and (max-width: 800px) {
+            table#time-savings-table thead th {
+                min-width: auto;
+            }
+        }
+
         @media screen and (max-width: 600px) {
             #page3 .box {
                 margin-left: 0;
                 margin-right: 0;
+            }
+        }
+
+        @media screen and (max-width: 500px) {
+
+            #time-savings-table th,
+            #time-savings-table td {
+                font-size: 12px;
             }
         }
     </style>
@@ -250,129 +299,105 @@
         const activityData = [
             {
                 text: 'HR writes ad and places on careers website, as well as external job boards (e.g. Seek, Indeed)',
+                featureText: '"Clone" Online Form and Multi poster',
                 prefix: '',
                 inputName: 'ADhrWritesAd',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 30
+                defaultValue: 30,
+                scoutValue: 10
             },
             {
                 text: 'All applications received in HR inbox, checked, categorised, filed.',
+                featureText: 'All applications drop automatically into SCOUT',
                 prefix: '',
                 inputName: 'ADappsReceived',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 120
+                defaultValue: 120,
+                scoutValue: 0
             },
             {
                 text: 'HR send "Receipt of Application" e-mails to all candidates.',
+                featureText: '"Receipt of Application" emails are sent automatically by the system',
                 prefix: '',
                 inputName: 'ADsendReceipt',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 15
+                defaultValue: 15,
+                scoutValue: 0
             },
             {
                 text: 'HR eliminates irrelevant candidates based on 1st round criteria',
+                featureText: 'Auto-status and Auto-rate',
                 prefix: '',
                 inputName: 'ADhrFiltersCandidates',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 180
+                defaultValue: 180,
+                scoutValue: 0
             },
             {
                 text: 'Applications and resumes from potentially relevant candidates reviewed and forwarded to line manager (Please enter average time for 15 applications)',
+                featureText: 'Line Manager can log into SCOUT to review shortlist - no need for Admin to forward via e-mail',
                 prefix: '',
                 inputName: 'ADforwardToLineManager',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 30
+                defaultValue: 30,
+                scoutValue: 0
             },
             {
                 text: 'Line Manager assesses 1st round shortlist candidates and develops 2nd round candidate shortlist (Please enter average time for 5 applications)',
+                featureText: 'Rate and rank',
                 prefix: '',
                 inputName: 'ADLineManagerShortlists',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 60
+                defaultValue: 60,
+                scoutValue: 20
             },
             {
                 text: 'Face-to-Face interviews scheduled (Please enter average time for 5 candidates)',
+                featureText: '"Invite to Timeslot" automatic scheduling tool',
                 prefix: '',
                 inputName: 'ADinterviewsScheduled',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 25
+                defaultValue: 25,
+                scoutValue: 5
             },
             {
                 text: 'Face-to Face interviews conducted (Please enter average time for 5 candidates)',
+                featureText: 'Smart Forms',
                 prefix: '',
                 inputName: 'ADinterviewsConducted',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 300
+                defaultValue: 300,
+                scoutValue: 225
             },
             {
                 text: 'Reference Checks (Please enter average time for 5 candidates)',
+                featureText: 'Smart Forms',
                 prefix: '',
                 inputName: 'ADreferenceChecks',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 40
+                defaultValue: 40,
+                scoutValue: 1
             },
             {
                 text: 'Unsuccessful candidates notified by e-mail',
+                featureText: 'Bulk Email',
                 prefix: '',
                 inputName: 'ADunsuccesfulCandidatesNotified',
                 postfix: 'minutes',
                 requirement: '',
-                defaultValue: 30
+                defaultValue: 30,
+                scoutValue: 5
             }
         ];
-
-        const activityDataScout = [
-            {
-                inputName: 'ADhrWritesAd',
-                defaultValue: 10
-            },
-            {
-                inputName: 'ADappsReceived',
-                defaultValue: 0
-            },
-            {
-                inputName: 'ADsendReceipt',
-                defaultValue: 0
-            },
-            {
-                inputName: 'ADhrFiltersCandidates',
-                defaultValue: 0
-            },
-            {
-                inputName: 'ADforwardToLineManager',
-                defaultValue: 0
-            },
-            {
-                inputName: 'ADLineManagerShortlists',
-                defaultValue: 20
-            },
-            {
-                inputName: 'ADinterviewsScheduled',
-                defaultValue: 5
-            },
-            {
-                inputName: 'ADinterviewsConducted',
-                defaultValue: 225
-            },
-            {
-                inputName: 'ADreferenceChecks',
-                defaultValue: 30
-            },
-            {
-                inputName: 'ADunsuccesfulCandidatesNotified',
-                defaultValue: 5
-            }
-        ];
-
     </script>
     <!-- <script type="text/javascript"> -->
     <script type="text/babel">
@@ -380,6 +405,7 @@
             constructor(props) {
                 super(props);
                 this.state = {
+                    devMode: false,
                     page: 1,
                     recruitmentDataReady: false,
                     activityDataReady: false,
@@ -396,9 +422,11 @@
                 this.requestDemo = this.requestDemo.bind(this);
                 this.handleCalculate = this.handleCalculate.bind(this);
                 this.handlePrefill = this.handlePrefill.bind(this);
+                this.handleValidation = this.handleValidation.bind(this);
             }
 
             handleInput(e) {
+
                 this.setState({
                     [e.target.name]: e.target.value
                 });
@@ -409,15 +437,15 @@
             }
 
             handlePrefill(page) {
-                switch(page) {
+                switch (page) {
                     case 1: {
-                        this.props.recruitmentData.forEach(data=>{
+                        this.props.recruitmentData.forEach(data => {
                             let name = data.inputName;
                             this.setState({ [name]: data.defaultValue });
                         });
                     } break;
                     case 2: {
-                        this.props.activityData.forEach(data=>{
+                        this.props.activityData.forEach(data => {
                             let name = data.inputName;
                             this.setState({ [name]: data.defaultValue });
                         });
@@ -430,9 +458,9 @@
             handleCalculate() {
 
                 // ROI Breakdown 1
-                console.log('avgRolesPerYear: ' + (parseInt(this.state.RDnumberOfRolesByHR) + parseInt(this.state.RDnumberOfRolesByRA)));                
+                console.log('avgRolesPerYear: ' + (parseInt(this.state.RDnumberOfRolesByHR) + parseInt(this.state.RDnumberOfRolesByRA)));
                 let avgMinutesPerJob = 0; // Average Minutes Per Job
-                this.props.activityData.forEach(input=>{
+                this.props.activityData.forEach(input => {
                     avgMinutesPerJob = avgMinutesPerJob + parseInt(this.state[input.inputName]);
                 });
                 console.log('avgMinutesPerJob: ' + avgMinutesPerJob);
@@ -444,8 +472,8 @@
 
                 // ROI Breakdown 2
                 let avgMinutesPerJobWithScout = 0; // Average Minutes Per Job With Scout
-                this.props.activityDataScout.forEach(input=>{
-                    avgMinutesPerJobWithScout = avgMinutesPerJobWithScout + parseInt(input.defaultValue);
+                this.props.activityData.forEach(input => {
+                    avgMinutesPerJobWithScout = avgMinutesPerJobWithScout + parseInt(input.scoutValue);
                 });
                 console.log('avgMinutesPerJobWithScout: ' + parseInt(avgMinutesPerJobWithScout));
 
@@ -461,22 +489,20 @@
                 let savingsWithScout = hoursSavingsWithScout * parseInt(this.state.RDhourlySalaryHR);
 
                 // SAVINGS 2
-
+                let savingsWithoutRA = parseInt(this.state.RDnumberOfRolesByRA) * parseInt(this.state.RDfeePerRoleBy);
                 console.log('Average # of roles filled by agencies per year: ' + parseInt(this.state.RDnumberOfRolesByRA));
                 console.log('Average fee per role filled by Recruitment Agency: ' + parseInt(this.state.RDfeePerRoleBy));
-                let savingsWithoutRA = parseInt(this.state.RDnumberOfRolesByRA) * parseInt(this.state.RDfeePerRoleBy);
                 console.log('savingsWithoutRA: ' + parseInt(this.state.RDnumberOfRolesByRA) * parseInt(this.state.RDfeePerRoleBy));
 
                 // TOTAL SAVINGS
                 let totalSavings = savingsWithScout + savingsWithoutRA;
                 console.log('Total Savings: ' + totalSavings);
 
-                this.setState({ avgHoursWithoutScout, avgHoursWithScout, hoursSavingsWithScout, savingsWithScout, savingsWithoutRA, totalSavings});
+                this.setState({ avgHoursWithoutScout, avgHoursWithScout, hoursSavingsWithScout, savingsWithScout, savingsWithoutRA, totalSavings });
             }
 
             nextPage(currentPage) {
                 currentPage === 2 ? this.handleCalculate() : '';
-
                 this.setState({
                     page: currentPage + 1
                 });
@@ -489,7 +515,26 @@
             }
 
             requestDemo() {
-                window.parent.location.href= "http://www.scouttalenthq.com/request-demo/";
+                window.parent.location.href = "http://www.scouttalenthq.com/request-demo/";
+            }
+
+            handleValidation(data) {
+
+                const inputs = data;
+                let counter = 0;
+                inputs.forEach(input => {
+                    if ((this.state[input.inputName] !== undefined) || (this.state[input.inputName] >= 0) || (this.state[input.inputName] === '')) {
+                        counter++;
+                    }
+                });
+                let bool = false;
+                counter === inputs.length ? bool = true : bool = false;
+
+                return bool;
+            }
+
+            componentDidMount() {
+                M.AutoInit();
             }
 
             render() {
@@ -502,15 +547,21 @@
                 const avgHoursWithScout = this.state.avgHoursWithScout;
                 const hoursSavingsWithScout = this.state.hoursSavingsWithScout;
                 const savingsWithScout = this.state.savingsWithScout;
-                const savingsWithoutRA =this.state.savingsWithoutRA;
+                const savingsWithoutRA = this.state.savingsWithoutRA;
                 const totalSavings = this.state.totalSavings;
+
+                const validatePage1 = this.handleValidation(recruitmentData);
+                const validatePage2 = this.handleValidation(activityData);
+
+                const nextButtonStyle1 = validatePage1 ? 'waves-effect btn scout-teal' : 'waves-effect btn scout-teal disabled';
+                const nextButtonStyle2 = validatePage2 ? 'waves-effect btn scout-teal' : 'waves-effect btn scout-teal disabled';
 
                 return (
                     <div className="row">
                         <div id="page1" className={page1visibility}>
-                            <h1>Scout Talent:Recruit ROI Calculator</h1>
-                            <p>The ROI calculator below compares the time spent managing a recruitment campaign manually and the costs involved, to the time spent managing a recruitment campaign and the costs involved with a candidate management system like Scout Talent: Recruit.</p>
-                            <button className="right" onClick={()=>this.handlePrefill(1)}>Prefill</button>
+                            <h1 className="scout-navy-text">Scout Talent<span className="scout-teal-text">:Recruit</span> ROI Calculator</h1>
+                            <p>The ROI calculator below compares the time spent managing a recruitment campaign manually and the costs involved, to the time spent managing a recruitment campaign and the costs involved with a candidate management system like Scout Talent:Recruit.</p>
+                            <button className={this.state.devMode ? '' : 'hidden'} onClick={() => this.handlePrefill(1)}>Prefill</button>
                             <div className="col s12 m12 l8">
                                 <div className="row">
                                     <div id="recruitment-data" className="box">
@@ -520,14 +571,14 @@
                                         </div>
                                         <Table data={this.props.recruitmentData} handleInput={this.handleInput} appStates={this.state} />
                                     </div>
-                                    <button className="waves-effect btn scout-teal" onClick={() => this.nextPage(1)}>NEXT</button>
+                                    <button className={nextButtonStyle1} onClick={() => this.nextPage(1)}>NEXT</button>
                                 </div>
                             </div>
                         </div>
 
                         <div id="page2" className={page2visibility}>
-                            <h1>Scout Talent:Recruit ROI Calculator</h1>
-                            <button className="right" onClick={()=>this.handlePrefill(2)}>Prefill</button>
+                            <h1 className="scout-navy-text">Scout Talent<span className="scout-teal-text">:Recruit</span> ROI Calculator</h1>
+                            <button className={this.state.devMode ? '' : 'hidden'} onClick={() => this.handlePrefill(2)}>Prefill</button>
                             <div className="col s12 m12 l8">
                                 <div className="row">
                                     <div id="activity-data" className="box">
@@ -538,13 +589,13 @@
                                         <Table data={this.props.activityData} handleInput={this.handleInput} appStates={this.state} />
                                     </div>
                                     <button className="waves-effect btn scout-silver" onClick={() => this.prevPage(2)}>PREVIOUS</button>
-                                    <button className="waves-effect btn scout-teal" onClick={() => this.nextPage(2)}>SEE RESULTS</button>
+                                    <button className={nextButtonStyle2} onClick={() => this.nextPage(2)}>SEE RESULTS</button>
                                 </div>
                             </div>
                         </div>
 
                         <div id="page3" className={page3visibility}>
-                            <h1>ROI Breakdown</h1>
+                            <h1 className="scout-navy-text">ROI Breakdown</h1>
                             <div className="col s12 m6">
                                 <div className="row">
                                     <div id="roi-breakdown" className="box mr1">
@@ -590,6 +641,12 @@
                                 </div>
                             </div>
                             <div className="clearfix"></div>
+                            <div className="col s12">
+                                <div className="row">
+                                    <TimeSavingsTable activityData={this.props.activityData} appStates={this.state} />
+                                </div>
+                            </div>
+                            <div className="clearfix"></div>
                             <button className="waves-effect btn scout-silver" onClick={() => this.prevPage(3)}>PREVIOUS</button>
                             <button className="waves-effect btn scout-teal" onClick={() => this.requestDemo()}>REQUEST A DEMO</button>
                         </div>
@@ -601,6 +658,7 @@
         class Table extends React.Component {
             render() {
                 let tableData = this.props.data;
+
                 let rows = [];
                 tableData.forEach((data, i) => {
                     rows.push(<TableRow text={data.text} prefix={data.prefix} postfix={data.postfix} inputName={data.inputName} handleInput={this.props.handleInput} appStates={this.props.appStates} key={i} />);
@@ -638,8 +696,73 @@
             }
         }
 
+        class TimeSavingsTableRow extends React.Component {
+            render() {
+                const text = this.props.text;
+                const manualValue = this.props.manualValue;
+                const scoutValue = this.props.scoutValue;
+                const featureText = this.props.featureText;
+                return (
+                    <tr>
+                        <td className="text-label">{text}</td>
+                        <td className="manual-number">{manualValue}</td>
+                        <td className="scout-number">{scoutValue}</td>
+                        <td className="feature-text">{featureText}</td>
+                    </tr>
+                )
+            }
+        }
+
+        class TimeSavingsTable extends React.Component {
+            render() {
+                const activityData = this.props.activityData;
+                const appStates = this.props.appStates;
+
+                let avgMinutesPerJob = 0; // Average Minutes Per Job
+                let avgMinutesPerJobWithScout = 0; // Average Minutes Per Job With Scout
+                let rows = [];
+                activityData.forEach((data, i) => {
+                    let manualValue = this.props.appStates[data.inputName];
+                    rows.push(<TimeSavingsTableRow text={data.text} manualValue={manualValue} scoutValue={data.scoutValue} featureText={data.featureText} key={i} />);
+                    avgMinutesPerJob = avgMinutesPerJob + this.props.appStates[data.inputName];
+                    avgMinutesPerJobWithScout = avgMinutesPerJobWithScout + data.scoutValue;
+                });
+
+                const manualHours = avgMinutesPerJob / 60;
+                const scoutHours = avgMinutesPerJobWithScout / 60;
+
+                return (
+                    <table id="time-savings-table" className="striped">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Manual Process<br />(time spent in minutes)</th>
+                                <th>With :Recruit Software<br />(time spent in minutes)</th>
+                                <th>Relevant :Recruit Feature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows}
+                            <tr>
+                                <td className="text-label">Talent Pool created</td>
+                                <td className="manual-number">N/A<br />Talent Pools are not created with manual method</td>
+                                <td className="scout-number">Instantaneous</td>
+                                <td className="feature-text">Talent Pool</td>
+                            </tr>
+                            <tr className="last-row">
+                                <td className="text-label">Average time per job</td>
+                                <td className="manual-number">{Math.round(manualHours)} hours per recruitment campaign</td>
+                                <td className="scout-number">{Math.round(scoutHours)} hours per recruitment campaign</td>
+                                <td className="feature-text"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                )
+            }
+        }
+
         ReactDOM.render(
-            <RoiCalculator recruitmentData={recruitmentData} activityData={activityData} activityDataScout={activityDataScout}/>, document.getElementById('root')
+            <RoiCalculator recruitmentData={recruitmentData} activityData={activityData} />, document.getElementById('root')
         )
     </script>
 
