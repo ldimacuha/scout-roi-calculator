@@ -116,6 +116,12 @@
             width: 100%;
         }
 
+        .total-savings {
+            font-size: 24px;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
         .no-padding {
             padding: 0;
         }
@@ -574,7 +580,7 @@
                                         </div>
                                         <table>
                                             <tbody>
-                                                <tr><td><div className="col s12"><p>${this.numberWithCommas(Math.round(totalSavings))}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p className="total-savings">${this.numberWithCommas(Math.round(totalSavings))}</p></div></td></tr>
                                             </tbody>
                                         </table>
                                     </div>
