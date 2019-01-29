@@ -413,7 +413,6 @@
             }
 
             handleInput(e) {
-
                 this.setState({
                     [e.target.name]: e.target.value
                 });
@@ -489,6 +488,8 @@
             }
 
             nextPage(currentPage) {
+                window.parent.scroll(0,0);
+
                 currentPage === 2 ? this.handleCalculate() : '';
                 this.setState({
                     page: currentPage + 1
@@ -496,6 +497,8 @@
             }
 
             prevPage(currentPage) {
+                window.parent.scroll(0,0);
+
                 this.setState({
                     page: currentPage - 1
                 });
@@ -506,7 +509,6 @@
             }
 
             handleValidation(data) {
-
                 const inputs = data;
                 let counter = 0;
                 inputs.forEach(input => {
