@@ -120,7 +120,7 @@
             padding: 0;
         }
     </style>
-    <style>
+    <style type="text/css">
         @media screen and (max-width: 600px) {
             #page3 .box {
                 margin-left: 0;
@@ -205,7 +205,7 @@
                 inputName: 'RDnumberOfRolesByHR',
                 postfix: 'roles',
                 requirement: '',
-                defaultValue: 10
+                defaultValue: 42
             },
             {
                 text: 'Number of roles filled by Recruitment Agencies per year',
@@ -213,7 +213,7 @@
                 inputName: 'RDnumberOfRolesByRA',
                 postfix: 'roles',
                 requirement: '',
-                defaultValue: 10
+                defaultValue: 6
             },
             {
                 text: 'Average fee per role filled by Recruitment Agency',
@@ -221,7 +221,7 @@
                 inputName: 'RDfeePerRoleBy',
                 postfix: 'per role',
                 requirement: 'RDnumberOfRolesByRA',
-                defaultValue: 100
+                defaultValue: 15000
             },
             {
                 text: 'Approximate number of applications per role',
@@ -229,7 +229,7 @@
                 inputName: 'RDappsPerRole',
                 postfix: 'applications',
                 requirement: '',
-                defaultValue: 25
+                defaultValue: 30
             },
             {
                 text: 'Average an hour per employee in HR/Recruitment Team (This hourly rate is based on cost of seat which is typically 2.5x salary)',
@@ -237,7 +237,7 @@
                 inputName: 'RDhourlySalaryHR',
                 postfix: 'per hour',
                 requirement: '',
-                defaultValue: 35
+                defaultValue: 50
             }
         ];
 
@@ -323,6 +323,50 @@
                 defaultValue: 30
             }
         ];
+
+        const activityDataScout = [
+            {
+                inputName: 'ADhrWritesAd',
+                defaultValue: 10
+            },
+            {
+                inputName: 'ADappsReceived',
+                defaultValue: 0
+            },
+            {
+                inputName: 'ADsendReceipt',
+                defaultValue: 0
+            },
+            {
+                inputName: 'ADhrFiltersCandidates',
+                defaultValue: 0
+            },
+            {
+                inputName: 'ADforwardToLineManager',
+                defaultValue: 0
+            },
+            {
+                inputName: 'ADLineManagerShortlists',
+                defaultValue: 20
+            },
+            {
+                inputName: 'ADinterviewsScheduled',
+                defaultValue: 5
+            },
+            {
+                inputName: 'ADinterviewsConducted',
+                defaultValue: 225
+            },
+            {
+                inputName: 'ADreferenceChecks',
+                defaultValue: 30
+            },
+            {
+                inputName: 'ADunsuccesfulCandidatesNotified',
+                defaultValue: 5
+            }
+        ];
+
     </script>
     <!-- <script type="text/javascript"> -->
     <script type="text/babel">
@@ -354,6 +398,10 @@
                 });
             }
 
+            numberWithCommas(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
             handlePrefill(page) {
                 switch(page) {
                     case 1: {
@@ -374,42 +422,50 @@
             }
 
             handleCalculate() {
-                let num = 0;
+
+                // ROI Breakdown 1
+                console.log('avgRolesPerYear: ' + (parseInt(this.state.RDnumberOfRolesByHR) + parseInt(this.state.RDnumberOfRolesByRA)));                
+                let avgMinutesPerJob = 0; // Average Minutes Per Job
                 this.props.activityData.forEach(input=>{
-                    let name = input.inputName;
-                    name = name.slice(0,2);
-                    if(name==='AD') {
-                        num = num + parseInt(this.state[input.inputName]);
-                    }
+                    avgMinutesPerJob = avgMinutesPerJob + parseInt(this.state[input.inputName]);
                 });
+                console.log('avgMinutesPerJob: ' + avgMinutesPerJob);
 
-                // 1
-                let avgHoursWithoutScout = (num / 60) * (parseInt(this.state.RDnumberOfRolesByHR) + parseInt(this.state.RDnumberOfRolesByRA)) ;
-                avgHoursWithoutScout = avgHoursWithoutScout.toFixed(2);
-                // 2
+                let avgMinutesPerYear = avgMinutesPerJob * parseInt(this.state.RDnumberOfRolesByHR);
+                console.log('avgMinutesPerYear: ' + avgMinutesPerYear);
 
-                let avgHoursWithScout = (241 / 60) * (parseInt(this.state.RDnumberOfRolesByHR) + parseInt(this.state.RDnumberOfRolesByRA)) ;
-                avgHoursWithScout = avgHoursWithScout.toFixed(2);
-                // 3
+                let avgHoursWithoutScout = (avgMinutesPerJob / 60) * parseInt(this.state.RDnumberOfRolesByHR);
 
+                // ROI Breakdown 2
+                let avgMinutesPerJobWithScout = 0; // Average Minutes Per Job With Scout
+                this.props.activityDataScout.forEach(input=>{
+                    avgMinutesPerJobWithScout = avgMinutesPerJobWithScout + parseInt(input.defaultValue);
+                });
+                console.log('avgMinutesPerJobWithScout: ' + parseInt(avgMinutesPerJobWithScout));
+
+                let avgMinutesWithScoutPerYear = avgMinutesPerJobWithScout * parseInt(this.state.RDnumberOfRolesByHR);
+                console.log('avgMinutesWithScoutPerYear: ' + avgMinutesWithScoutPerYear);
+
+                let avgHoursWithScout = (avgMinutesPerJobWithScout / 60) * parseInt(this.state.RDnumberOfRolesByHR);
+
+                // ROI Breakdown 3
                 let hoursSavingsWithScout = avgHoursWithoutScout - avgHoursWithScout;
-                hoursSavingsWithScout = hoursSavingsWithScout.toFixed(2);
 
-                // saving 1
+                // SAVINGS 1
+                let savingsWithScout = hoursSavingsWithScout * parseInt(this.state.RDhourlySalaryHR);
 
-                let savingsWithScout = parseInt(this.state.hoursSavingsWithScout) * parseInt(this.state.RDhourlySalaryHR);
-                savingsWithScout = savingsWithScout.toFixed(2);
+                // SAVINGS 2
 
-                // saving 2
+                console.log('Average # of roles filled by agencies per year: ' + parseInt(this.state.RDnumberOfRolesByRA));
+                console.log('Average fee per role filled by Recruitment Agency: ' + parseInt(this.state.RDfeePerRoleBy));
+                let savingsWithoutRA = parseInt(this.state.RDnumberOfRolesByRA) * parseInt(this.state.RDfeePerRoleBy);
+                console.log('savingsWithoutRA: ' + parseInt(this.state.RDnumberOfRolesByRA) * parseInt(this.state.RDfeePerRoleBy));
 
-                let savingsWithRA = parseInt(this.state.RDnumberOfRolesByRA) * parseInt(this.state.RDfeePerRoleBy);
-                savingsWithRA = savingsWithRA.toFixed(2);
+                // TOTAL SAVINGS
+                let totalSavings = savingsWithScout + savingsWithoutRA;
+                console.log('Total Savings: ' + totalSavings);
 
-                // TOTAL
-
-                let totalSavings = savingsWithScout + savingsWithRA;
-
-                this.setState({ avgHoursWithoutScout, avgHoursWithScout, hoursSavingsWithScout, savingsWithScout, savingsWithRA, totalSavings});
+                this.setState({ avgHoursWithoutScout, avgHoursWithScout, hoursSavingsWithScout, savingsWithScout, savingsWithoutRA, totalSavings});
             }
 
             nextPage(currentPage) {
@@ -491,9 +547,9 @@
                                         </div>
                                         <table>
                                             <tbody>
-                                                <tr><td><div className="col s12"><p>Average hours on recruitment campaigns per year</p><p>{avgHoursWithoutScout} hour{avgHoursWithoutScout > 1 ? 's' : ''}</p></div></td></tr>
-                                                <tr><td><div className="col s12"><p>Average hours on recruitment campaigns per year with Scout Talent</p><p>{avgHoursWithScout} hour{avgHoursWithScout > 1 ? 's' : ''}</p></div></td></tr>
-                                                <tr><td><div className="col s12"><p>Total savings (# of hours) per year with Scout Talent</p><p>{hoursSavingsWithScout} hour{hoursSavingsWithScout > 1 ? 's' : ''}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>Average hours on recruitment campaigns per year</p><p>{this.numberWithCommas(Math.round(avgHoursWithoutScout))} hour{avgHoursWithoutScout > 1 ? 's' : ''}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>Average hours on recruitment campaigns per year with Scout Talent</p><p>{this.numberWithCommas(Math.round(avgHoursWithScout))} hour{avgHoursWithScout > 1 ? 's' : ''}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>Total savings (# of hours) per year with Scout Talent</p><p>{this.numberWithCommas(Math.round(hoursSavingsWithScout))} hour{hoursSavingsWithScout > 1 ? 's' : ''}</p></div></td></tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -507,8 +563,8 @@
                                         </div>
                                         <table>
                                             <tbody>
-                                                <tr><td><div className="col s12"><p>Total savings in $ per year with Scout Talent implemented</p><p>${savingsWithScout}</p></div></td></tr>
-                                                <tr><td><div className="col s12"><p>Total savings per year without need for Recruitment Agency</p><p>${savingsWithoutRA}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>Total savings in $ per year with Scout Talent implemented</p><p>${this.numberWithCommas(Math.round(savingsWithScout))}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>Total savings per year without need for Recruitment Agency</p><p>${this.numberWithCommas(Math.round(savingsWithoutRA))}</p></div></td></tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -518,7 +574,7 @@
                                         </div>
                                         <table>
                                             <tbody>
-                                                <tr><td><div className="col s12"><p>${totalSavings}</p></div></td></tr>
+                                                <tr><td><div className="col s12"><p>${this.numberWithCommas(Math.round(totalSavings))}</p></div></td></tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -577,7 +633,7 @@
         }
 
         ReactDOM.render(
-            <RoiCalculator recruitmentData={recruitmentData} activityData={activityData} />, document.getElementById('root')
+            <RoiCalculator recruitmentData={recruitmentData} activityData={activityData} activityDataScout={activityDataScout}/>, document.getElementById('root')
         )
     </script>
 
