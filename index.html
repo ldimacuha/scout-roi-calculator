@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Version: 0.1.0 -->
 <html class="no-js" lang="en">
 
 <head>
@@ -229,11 +230,11 @@
     </script>
 
     <!-- REACT DEV -->
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <!-- REACT PROD -->
-    <!-- <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script> -->
     <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
 
     <!-- Other JS -->
@@ -274,7 +275,7 @@
                 defaultValue: 30
             },
             {
-                text: 'Average an hour per employee in HR/Recruitment Team (This hourly rate is based on cost of seat which is typically 2.5x salary)',
+                text: 'Average hourly rate per employee in HR/Recruitment Team (This hourly rate is based on cost of seat which is typically 2.5x salary)',
                 prefix: '$',
                 inputName: 'RDhourlySalaryHR',
                 postfix: 'per hour',
@@ -450,7 +451,6 @@
                     avgMinutesPerJob = avgMinutesPerJob + parseInt(this.state[input.inputName]);
                 });
                 console.log('avgMinutesPerJob: ' + avgMinutesPerJob);
-
                 let avgMinutesPerYear = avgMinutesPerJob * parseInt(this.state.RDnumberOfRolesByHR);
                 console.log('avgMinutesPerYear: ' + avgMinutesPerYear);
 
@@ -459,7 +459,11 @@
                 // ROI Breakdown 2
                 let avgMinutesPerJobWithScout = 0; // Average Minutes Per Job With Scout
                 this.props.activityData.forEach(input => {
-                    avgMinutesPerJobWithScout = avgMinutesPerJobWithScout + parseInt(input.scoutValue);
+                    if(input.inputName==='ADinterviewsConducted') {
+                        avgMinutesPerJobWithScout = avgMinutesPerJobWithScout + parseInt(this.state[input.inputName]);
+                    } else {
+                        avgMinutesPerJobWithScout = avgMinutesPerJobWithScout + parseInt(input.scoutValue);
+                    };
                 });
                 console.log('avgMinutesPerJobWithScout: ' + parseInt(avgMinutesPerJobWithScout));
 
@@ -488,7 +492,7 @@
             }
 
             nextPage(currentPage) {
-                window.parent.scroll(0,0);
+                window.parent.scroll(0, 0);
 
                 currentPage === 2 ? this.handleCalculate() : '';
                 this.setState({
@@ -497,7 +501,7 @@
             }
 
             prevPage(currentPage) {
-                window.parent.scroll(0,0);
+                window.parent.scroll(0, 0);
 
                 this.setState({
                     page: currentPage - 1
@@ -520,10 +524,6 @@
                 counter === inputs.length ? bool = true : bool = false;
 
                 return bool;
-            }
-
-            componentDidMount() {
-                M.AutoInit();
             }
 
             render() {
@@ -573,7 +573,7 @@
                                     <div id="activity-data" className="box">
                                         <div className="box-header scout-navy white-text">
                                             <h1>Activity</h1>
-                                            <p>Please accurately estimate in monutes how long each activity takes.</p>
+                                            <p>Please accurately estimate in minutes how long each activity takes per recruitment campaign.</p>
                                         </div>
                                         <Table data={this.props.activityData} handleInput={this.handleInput} appStates={this.state} />
                                     </div>
@@ -665,6 +665,12 @@
         }
 
         class TableRow extends React.Component {
+            handleInsertAverageTimeFor(name, identifier) {
+                const s = this.props.appStates['RDappsPerRole'] > 1 ? 's' : '';
+                const text = name === identifier ? '(Please enter average time for ' + this.props.appStates['RDappsPerRole'] + ' application' + s + ')' : '';
+                return text;
+            }
+
             render() {
                 const text = this.props.text;
                 const prefix = this.props.prefix;
@@ -674,7 +680,7 @@
                 const defaultValue = this.props.appStates[name];
 
                 const plural = this.props.appStates['RDappsPerRole'] > 1 ? 's' : '';
-                const extraText = name === 'ADsendReceipt' ? '(Please enter average time for ' + this.props.appStates['RDappsPerRole'] + ' application' + plural + ')' : '';
+                const extraText = name === 'ADappsReceived' || name === 'ADsendReceipt' || name === 'ADunsuccesfulCandidatesNotified' ? '(Please enter average time for ' + this.props.appStates['RDappsPerRole'] + ' application' + plural + ')' : '';
 
                 return (
                     <tr>
@@ -715,7 +721,11 @@
                 let rows = [];
                 activityData.forEach((data, i) => {
                     let manualValue = this.props.appStates[data.inputName];
-                    rows.push(<TimeSavingsTableRow text={data.text} manualValue={manualValue} scoutValue={data.scoutValue} featureText={data.featureText} key={i} />);
+                    if(data.inputName==='ADinterviewsConducted') {
+                        rows.push(<TimeSavingsTableRow text={data.text} manualValue={manualValue} scoutValue={manualValue} featureText={data.featureText} key={i} />);
+                    } else {
+                        rows.push(<TimeSavingsTableRow text={data.text} manualValue={manualValue} scoutValue={data.scoutValue} featureText={data.featureText} key={i} />);
+                    }
                 });
 
                 return (
